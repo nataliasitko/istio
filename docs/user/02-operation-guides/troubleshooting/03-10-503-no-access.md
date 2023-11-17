@@ -43,7 +43,7 @@ If the restart doesn't help, change the image of Istio Ingress Gateway to allow 
 4. If the ports `80` and `443` are not used, check the logs of the Istio Ingress Gateway container for errors related to certificates. Run:
 
     ```bash
-    kubectl logs -n istio-system -l app=istio-ingressgateway -c ingress-sds
+    kubectl logs -n istio-system -l app=istio-ingressgateway -c istio-proxy
     ```
 
 5. In the case of certificate-related issues, make sure that the `kyma-gateway-certs` and `kyma-gateway-certs-cacert` Secrets are available in the `istio-system` Namespace and that they contain proper data. Run:
