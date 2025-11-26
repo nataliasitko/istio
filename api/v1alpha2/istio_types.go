@@ -109,7 +109,7 @@ const (
 	// Proxy sidecar restart failed.
 	ConditionReasonProxySidecarRestartFailed        ConditionReason = "ProxySidecarRestartFailed"
 	ConditionReasonProxySidecarRestartFailedMessage                 = "Proxy sidecar restart failed"
-	// Proxy sidecar restart partially succeeded. //TODO what this means?
+	// Proxy sidecar restart partially succeeded.
 	ConditionReasonProxySidecarRestartPartiallySucceeded        ConditionReason = "ProxySidecarRestartPartiallySucceeded"
 	ConditionReasonProxySidecarRestartPartiallySucceededMessage                 = "Proxy sidecar restart partially succeeded"
 	// A manual restart of the proxy sidecar is required for some workloads..
