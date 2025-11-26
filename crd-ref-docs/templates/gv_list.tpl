@@ -16,10 +16,20 @@ You are only allowed to use one Istio CR, which you must create in the `kyma-sys
 If the namespace contains multiple Istio CRs, the oldest one reconciles the module.
 Any additional Istio CR is placed in the `Warning` state.
 
-## APIVersions
+## Sample Custom Resource
+This is a sample Istio CR that that configures Istio installation in your Kyma cluster.
+
+```yaml
+{TBD}
+```
+
+## Custom Resource Parameters
+The following tables list all the possible parameters of a given resource together with their descriptions.
+
+### APIVersions
 {{- range $groupVersions }}
 - {{ markdownRenderGVLink . }}
-{{- end }}
+{{- end -}}
 
 {{ range $groupVersions }}
 {{ template "gvDetails" . }}
