@@ -85,6 +85,7 @@ type CniK8sConfig struct {
 	Resources *Resources `json:"resources,omitempty"`
 }
 
+// Configures the [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 type HPASpec struct {
 	// Defines the minimum number of replicas for the HorizontalPodAutoscaler.
 	// +kubebuilder:validation:Minimum=0

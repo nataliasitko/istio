@@ -20,6 +20,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// Signifies the current state of the Istio custom resource. 
+// The possible values are `Ready`, `Processing`, `Error`, `Deleting`, or `Warning`.
 type State string
 type ConditionType string
 type ConditionReason string
@@ -194,7 +196,7 @@ type IstioList struct {
 
 // Defines the observed state of the Istio custom resource.
 type IstioStatus struct {
-	// Signifies the current state of **CustomObject**. Possible values are `Ready`, `Processing`, `Error`, `Deleting`, or `Warning`.
+	// Signifies the current state of the Istio custom resource. Possible values are `Ready`, `Processing`, `Error`, `Deleting`, or `Warning`.
 	// +kubebuilder:validation:Required
 	// +kubebuilder:validation:Enum=Processing;Deleting;Ready;Error;Warning
 	State State `json:"state"`

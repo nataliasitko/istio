@@ -163,6 +163,8 @@ Appears in:
 
 ### HPASpec
 
+Configures the [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
+
 Appears in:
 - [KubernetesResourcesConfig](#kubernetesresourcesconfig)
 
@@ -246,7 +248,7 @@ Appears in:
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **state** <br /> [State](#state) | Signifies the current state of **CustomObject**. Possible values are `Ready`, `Processing`, `Error`, `Deleting`, or `Warning`. | Enum: [Processing Deleting Ready Error Warning] <br />Required <br /> |
+| **state** <br /> [State](#state) | Signifies the current state of the Istio custom resource. Possible values are `Ready`, `Processing`, `Error`, `Deleting`, or `Warning`. | Enum: [Processing Deleting Ready Error Warning] <br />Required <br /> |
 | **conditions** <br /> [Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.33/#condition-v1-meta) | Contains conditions associated with IstioStatus. | Optional |
 | **description** <br /> string | Describes the Istio status. | Optional |
 
@@ -266,12 +268,14 @@ Appears in:
 
 ### Metrics
 
+Configures Istio telemetry metrics.
+
 Appears in:
 - [Telemetry](#telemetry)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **prometheusMerge** <br /> boolean | Defines whether the prometheusMerge feature is enabled. If yes, appropriate prometheus.io annotations are added to all data plane Pods to set up scraping.<br />If these annotations already exist, they are overwritten. With this option, the Envoy sidecar merges Istio’s metrics with the application metrics.<br />The merged metrics are scraped from `:15020/stats/prometheus`. | Optional <br /> |
+| **prometheusMerge** <br /> boolean | Defines whether the **prometheusMerge** feature is enabled. If yes, appropriate prometheus.io annotations are added to all data plane Pods to set up scraping.<br />If these annotations already exist, they are overwritten. With this option, the Envoy sidecar merges Istio’s metrics with the application metrics.<br />The merged metrics are scraped from `:15020/stats/prometheus`. | Optional <br /> |
 
 ### PilotFeatures
 
@@ -348,6 +352,9 @@ Appears in:
 
 ### State
 
+Signifies the current state of the Istio custom resource.
+The possible values are `Ready`, `Processing`, `Error`, `Deleting`, or `Warning`.
+
 Underlying type: string
 
 Appears in:
@@ -374,12 +381,14 @@ Appears in:
 
 ### Telemetry
 
+Configures Istio telemetry.
+
 Appears in:
 - [Config](#config)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **metrics** <br /> [Metrics](#metrics) | Specifies the configuration of Istio telemetry metrics. | Optional <br /> |
+| **metrics** <br /> [Metrics](#metrics) | Configures Istio telemetry metrics. | Optional <br /> |
 
 ### ToDownstream
 
