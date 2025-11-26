@@ -185,7 +185,7 @@ type Istio struct {
 
 //+kubebuilder:object:root=true
 
-// Contains a list of Istio's. //TODO
+// Contains a list of Istio's.
 type IstioList struct {
 	metav1.TypeMeta `        json:",inline"`
 	metav1.ListMeta `        json:"metadata,omitempty"`

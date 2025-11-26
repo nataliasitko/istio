@@ -40,25 +40,27 @@ Appears in:
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **name** <br /> string | A unique name identifying the authorization provider. | Required <br /> |
-| **service** <br /> string | Specifies the service that implements the Envoy `ext_authz` HTTP authorization service.<br />The recommended format is `[Namespace/]Hostname`.<br />Specifying the namespace is necessary only if it is required to unambiguously resolve a service in the service registry.<br />The host name refers to the fully qualified host name of a service defined by either a Kubernetes Service or a ServiceEntry. | None |
+| **name** <br /> string | Specifies a unique name identifying the authorization provider. | Required <br /> |
+| **service** <br /> string | Specifies the service that implements the Envoy `ext_authz` HTTP authorization service.<br />The recommended format is `[Namespace/]Hostname`.<br />Specifying the namespace is necessary only if it is required to unambiguously resolve a service in the service registry.<br />The host name refers to the fully qualified host name of a service defined by either a Kubernetes Service or a ServiceEntry. | Optional |
 | **port** <br /> integer | Specifies the port of the Service. | Required <br /> |
-| **headers** <br /> [Headers](#headers) | Specifies headers included, added, or forwarded during authorization. | None |
-| **pathPrefix** <br /> string | Specifies the prefix which included in the request sent to the authorization service.<br />The prefix might be constructed with special characters (e.g., `/test?original_path=`). | Optional <br /> |
+| **headers** <br /> [Headers](#headers) | Specifies the headers included, added, or forwarded during authorization. | Optional |
+| **pathPrefix** <br /> string | Specifies the prefix which included in the request sent to the authorization service.<br />The prefix might be constructed with special characters (for example, `/test?original_path=`). | Optional <br /> |
 | **timeout** <br /> [Duration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.33/#duration-v1-meta) | Specifies the timeout for the HTTP authorization request to the external service. | Optional <br /> |
 
 ### CniComponent
 
-Configures the CNI Istio component.
+Configures the Istio CNI DaemonSet component.
 
 Appears in:
 - [Components](#components)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **k8s** <br /> [CniK8sConfig](#cnik8sconfig) | **CniK8sConfig** is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec). | Required <br /> |
+| **k8s** <br /> [CniK8sConfig](#cnik8sconfig) | Configures the Istio CNI DaemonSet component. It is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec). | Required <br /> |
 
 ### CniK8sConfig
+
+Configures the Istio CNI DaemonSet component. It is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 
 Appears in:
 - [CniComponent](#cnicomponent)
@@ -70,16 +72,18 @@ Appears in:
 
 ### Components
 
+Configures Istio components.
+
 Appears in:
 - [IstioSpec](#istiospec)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **pilot** <br /> [IstioComponent](#istiocomponent) | Defines component configuration for Istiod. | None |
-| **ingressGateway** <br /> [IstioComponent](#istiocomponent) | Defines component configurations for Istio Ingress Gateway. | None |
-| **cni** <br /> [CniComponent](#cnicomponent) | Defines component configuration for Istio CNI DaemonSet. | None |
-| **proxy** <br /> [ProxyComponent](#proxycomponent) | Defines component configuration for the Istio sidecar proxy. | None |
-| **egressGateway** <br /> [EgressGateway](#egressgateway) | Defines component configuration for Istio Egress Gateway. | Optional <br /> |
+| **pilot** <br /> [IstioComponent](#istiocomponent) | Configures the Istio Pilot component. | Optional |
+| **ingressGateway** <br /> [IstioComponent](#istiocomponent) | Configures the Istio Ingress Gateway component. | Optional |
+| **cni** <br /> [CniComponent](#cnicomponent) | Configures the Istio CNI DaemonSet component. | Optional |
+| **proxy** <br /> [ProxyComponent](#proxycomponent) | Configures the Istio sidecar proxy component. | Optional |
+| **egressGateway** <br /> [EgressGateway](#egressgateway) | Configures the Istio Egress Gateway component. | Optional <br /> |
 
 ### ConditionReason
 
@@ -121,7 +125,7 @@ Appears in:
 
 ### Config
 
-Specifies the configuration for the Istio installation.
+Configures the Istio installation.
 
 Appears in:
 - [IstioSpec](#istiospec)
@@ -129,35 +133,35 @@ Appears in:
 | Field | Description | Validation |
 | --- | --- | --- |
 | **numTrustedProxies** <br /> integer | Defines the number of trusted proxies deployed in front of the Istio gateway proxy. | Maximum: 4.294967295e+09 <br />Minimum: 0 <br /> |
-| **authorizers** <br /> [Authorizer](#authorizer) array | Defines a list of external authorization providers. | None |
-| **gatewayExternalTrafficPolicy** <br /> string | Defines the external traffic policy for the Istio Ingress Gateway Service. Valid configurations are `"Local"` or `"Cluster"`. The external traffic policy set to `"Local"` preserves the client IP in the request, but also introduces the risk of unbalanced traffic distribution.<br />> [!WARNING]: Switching `externalTrafficPolicy` may result in a temporal increase in request delay. Make sure that this is acceptable. | Enum: [Local Cluster] <br />Optional <br /> |
+| **authorizers** <br /> [Authorizer](#authorizer) array | Defines a list of external authorization providers. | Optional |
+| **gatewayExternalTrafficPolicy** <br /> string | Defines the external traffic policy for the Istio Ingress Gateway Service. Valid configurations are `"Local"` or `"Cluster"`. The external traffic policy set to `"Local"` preserves the client IP in the request, but also introduces the risk of unbalanced traffic distribution.<br />WARNING: Switching **externalTrafficPolicy** may result in a temporal increase in request delay. Make sure that this is acceptable. | Enum: [Local Cluster] <br />Optional <br /> |
 | **telemetry** <br /> [Telemetry](#telemetry) | Defines the telemetry configuration of Istio. | Optional <br /> |
 
 ### EgressGateway
 
-Configures the Istio Egress Gateway.
+Configures the Istio Egress Gateway component.
 
 Appears in:
 - [Components](#components)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **k8s** <br /> [KubernetesResourcesConfig](#kubernetesresourcesconfig) | Defines the Kubernetes resources' configuration for Istio Egress Gateway. | Optional <br /> |
+| **k8s** <br /> [KubernetesResourcesConfig](#kubernetesresourcesconfig) | Defines the Kubernetes resources' configuration for Istio Egress Gateway. It's a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec). | Optional <br /> |
 | **enabled** <br /> boolean | Enables or disables Istio Egress Gateway. | Optional <br /> |
 
 ### Experimental
+
+Defines experimental configuration options.
 
 Appears in:
 - [IstioSpec](#istiospec)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **pilot** <br /> [PilotFeatures](#pilotfeatures) |  | None |
-| **enableDualStack** <br /> boolean | Enables the Dual Stack support | Optional <br /> |
+| **pilot** <br /> [PilotFeatures](#pilotfeatures) | Defines experimental Istio Pilot configuration options. | Optional |
+| **enableDualStack** <br /> boolean | Enables dual-stack support. | Optional <br /> |
 
 ### HPASpec
-
-Defines configuration for HorizontalPodAutoscaler.
 
 Appears in:
 - [KubernetesResourcesConfig](#kubernetesresourcesconfig)
@@ -169,24 +173,32 @@ Appears in:
 
 ### Headers
 
+Specifies headers included, added, or forwarded during authorization.
+Exact, prefix, and suffix matches are supported, similar to the syntax used in AuthorizationPolicy rules (excluding the presence match):
+- Exact match: `abc` matches the value `abc`.
+- Prefix match: `abc*` matches the values `abc` and `abcd`.
+- Suffix match: `*abc` matches the values `abc` and `xabc`.
+
 Appears in:
 - [Authorizer](#authorizer)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **inCheck** <br /> [InCheck](#incheck) | Defines headers to be included or added in check authorization request. | None |
-| **toUpstream** <br /> [ToUpstream](#toupstream) | Defines headers to be forwarded to the upstream (to the backend service). | None |
-| **toDownstream** <br /> [ToDownstream](#todownstream) | Defines headers to be forwarded to the downstream (the client). | None |
+| **inCheck** <br /> [InCheck](#incheck) | Defines the headers to be included or added in check authorization request. | Optional |
+| **toUpstream** <br /> [ToUpstream](#toupstream) | Defines the headers to be forwarded to the upstream (to the backend service). | Optional |
+| **toDownstream** <br /> [ToDownstream](#todownstream) | Defines the headers to be forwarded to the downstream (the client). | Optional |
 
 ### InCheck
+
+Defines the headers to be included or added in check authorization request.
 
 Appears in:
 - [Headers](#headers)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **include** <br /> string array | Lists client request headers included in the authorization request sent to the authorization service.<br />In addition to the headers specified here, the following headers are included by default:<br />- *Host*, *Method*, *Path*, and *Content-Length* are automatically sent.<br />- *Content-Length* is set to `0`, and the request does have a message body. However, the authorization request can include the buffered client request body (controlled by the **include_request_body_in_check** setting), consequently the **Content-Length** value of the authorization request reflects its payload size. | None |
-| **add** <br /> object (keys:string, values:string) | Specifies a set of additional fixed headers that included in the authorization request sent to the authorization service.<br />The key is the header name and value is the header value.<br />Client request of the same key or headers specified in `Include` are overridden. | None |
+| **include** <br /> string array | Lists client request headers included in the authorization request sent to the authorization service.<br />In addition to the headers specified here, the following headers are included by default:<br />- *Host*, *Method*, *Path*, and *Content-Length* are automatically sent.<br />- *Content-Length* is set to `0`, and the request does have a message body. However, the authorization request can include the buffered client request body (controlled by the **include_request_body_in_check** setting), consequently the **Content-Length** value of the authorization request reflects its payload size. | Optional |
+| **add** <br /> object (keys:string, values:string) | Specifies a set of additional fixed headers that included in the authorization request sent to the authorization service.<br />The key is the header name and value is the header value.<br />Client request of the same key or headers specified in `Include` are overridden. | Optional |
 
 ### Istio
 
@@ -196,20 +208,20 @@ Contains the Istio custom resource's specification and its current status.
 | --- | --- | --- |
 | **apiVersion** <br /> string | `operator.kyma-project.io/v1alpha2` | None |
 | **kind** <br /> string | `Istio` | None |
-| **metadata** <br /> [ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.33/#objectmeta-v1-meta) | For more information on the metadata fields, see Kubernetes API documentation. | None |
-| **spec** <br /> [IstioSpec](#istiospec) | Defines the desired state of the Istio installation. | None |
-| **status** <br /> [IstioStatus](#istiostatus) | Represents the current state of the Istio installation. | None |
+| **metadata** <br /> [ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.33/#objectmeta-v1-meta) | For more information on the metadata fields, see Kubernetes API documentation. | Optional |
+| **spec** <br /> [IstioSpec](#istiospec) | Defines the desired state of the Istio installation. | Optional |
+| **status** <br /> [IstioStatus](#istiostatus) | Represents the current state of the Istio installation. | Optional |
 
 ### IstioComponent
 
-IstioComponent defines the configuration for the generic Istio components, that is, Istio Ingress gateway and istiod.
+Defines the configuration for the generic Istio components, that is, Istio Ingress gateway and istiod.
 
 Appears in:
 - [Components](#components)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **k8s** <br /> [KubernetesResourcesConfig](#kubernetesresourcesconfig) |  | Required <br /> |
+| **k8s** <br /> [KubernetesResourcesConfig](#kubernetesresourcesconfig) | Defines the Kubernetes resources' configuration for Istio components. It's a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec). | Required <br /> |
 
 ### IstioSpec
 
@@ -220,27 +232,27 @@ Appears in:
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **config** <br /> [Config](#config) | Defines configuration of the Istio installation. | Optional <br /> |
-| **components** <br /> [Components](#components) | Defines Istio components's configuration. | Optional <br /> |
+| **config** <br /> [Config](#config) | Configures the Istio installation. | Optional <br /> |
+| **components** <br /> [Components](#components) | Configures Istio components. | Optional <br /> |
 | **experimental** <br /> [Experimental](#experimental) | Defines experimental configuration options. | Optional <br /> |
-| **compatibilityMode** <br /> boolean | Enables compatibility mode for Istio installation. | Optional <br /> |
+| **compatibilityMode** <br /> boolean | Enables the compatibility mode for the Istio installation. | Optional <br /> |
 
 ### IstioStatus
 
-IstioStatus defines the observed state of IstioCR.
+Defines the observed state of the Istio custom resource.
 
 Appears in:
 - [Istio](#istio)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **state** <br /> [State](#state) | State signifies the current state of CustomObject. Value<br />can be one of ("Ready", "Processing", "Error", "Deleting", "Warning"). | Enum: [Processing Deleting Ready Error Warning] <br />Required <br /> |
-| **conditions** <br /> [Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.33/#condition-v1-meta) |  Conditions associated with IstioStatus. | None |
-| **description** <br /> string | Description of Istio status. | None |
+| **state** <br /> [State](#state) | Signifies the current state of **CustomObject**. Possible values are `Ready`, `Processing`, `Error`, `Deleting`, or `Warning`. | Enum: [Processing Deleting Ready Error Warning] <br />Required <br /> |
+| **conditions** <br /> [Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.33/#condition-v1-meta) | Contains conditions associated with IstioStatus. | Optional |
+| **description** <br /> string | Describes the Istio status. | Optional |
 
 ### KubernetesResourcesConfig
 
-**KubernetesResourcesConfig** is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
+Defines Kubernetes-level configuration options for Istio components. It's a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 
 Appears in:
 - [EgressGateway](#egressgateway)
@@ -248,8 +260,8 @@ Appears in:
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **hpaSpec** <br /> [HPASpec](#hpaspec) | Defines configuration for [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/). | Optional <br /> |
-| **strategy** <br /> [Strategy](#strategy) | Defines configuration for rolling updates. See [Rolling Update Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment). | Optional <br /> |
+| **hpaSpec** <br /> [HPASpec](#hpaspec) | Configures the [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/). | Optional <br /> |
+| **strategy** <br /> [Strategy](#strategy) | Defines the rolling updates strategy. See [Rolling Update Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment). | Optional <br /> |
 | **resources** <br /> [Resources](#resources) | Defines Kubernetes resources' configuration. See [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/). | Optional <br /> |
 
 ### Metrics
@@ -263,24 +275,26 @@ Appears in:
 
 ### PilotFeatures
 
+Defines experimental Istio Pilot configuration options.
+
 Appears in:
 - [Experimental](#experimental)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **enableAlphaGatewayAPI** <br /> boolean |  | None |
-| **enableMultiNetworkDiscoverGatewayAPI** <br /> boolean |  | None |
+| **enableAlphaGatewayAPI** <br /> boolean | Enables experimental Gateway API alpha support in Istio Pilot. | Optional |
+| **enableMultiNetworkDiscoverGatewayAPI** <br /> boolean | Enables experimental multi-network discovery support in Istio Pilot. | Optional |
 
 ### ProxyComponent
 
-Defines Istio proxies' configuration.
+Configures the Istio sidecar proxy component.
 
 Appears in:
 - [Components](#components)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **k8s** <br /> [ProxyK8sConfig](#proxyk8sconfig) | ProxyK8sConfig is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec). | Required <br /> |
+| **k8s** <br /> [ProxyK8sConfig](#proxyk8sconfig) | **ProxyK8sConfig** is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec). | Required <br /> |
 
 ### ProxyK8sConfig
 
@@ -291,7 +305,7 @@ Appears in:
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **resources** <br /> [Resources](#resources) |  | None |
+| **resources** <br /> [Resources](#resources) | Defines Kubernetes resources' configuration. See [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/). | Optional |
 
 
 ### ResourceClaims
@@ -317,8 +331,8 @@ Appears in:
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **limits** <br /> [ResourceClaims](#resourceclaims) | The maximum amount of resources a container is allowed to use. | None |
-| **requests** <br /> [ResourceClaims](#resourceclaims) | The minimum amount of resources ( such as CPU and memory) a container needs to run. | None |
+| **limits** <br /> [ResourceClaims](#resourceclaims) | The maximum amount of resources a container is allowed to use. | Optional |
+| **requests** <br /> [ResourceClaims](#resourceclaims) | The minimum amount of resources ( such as CPU and memory) a container needs to run. | Optional |
 
 ### RollingUpdate
 
@@ -349,12 +363,14 @@ Appears in:
 
 ### Strategy
 
+Defines the rolling updates strategy. See [Rolling Update Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment).
+
 Appears in:
 - [KubernetesResourcesConfig](#kubernetesresourcesconfig)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **rollingUpdate** <br /> [RollingUpdate](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.33/#rollingupdatedeployment-v1-apps) | Defines the rolling update strategy. | Required <br /> |
+| **rollingUpdate** <br /> [RollingUpdate](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.33/#rollingupdatedeployment-v1-apps) | Defines the configuration for rolling updates. See [Rolling Update Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment). | Required <br /> |
 
 ### Telemetry
 
@@ -367,20 +383,24 @@ Appears in:
 
 ### ToDownstream
 
+Defines the headers to be forwarded to the downstream (the client).
+
 Appears in:
 - [Headers](#headers)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **onAllow** <br /> string array | Lists headers from the authorization service forwarded to downstream when the authorization check result is allowed (HTTP code `200`).<br />If not specified, the original request is forwarded to the backend unmodified.<br />Any existing headers are overridden. | None |
-| **onDeny** <br /> string array | Lists headers from the authorization service forwarded to downstream when the authorization check result is not allowed (HTTP code is other than `200`).<br />If not specified, all the authorization response headers, except *Authority (Host)*, are included in the response to the downstream.<br />When a header is included in this list, the following headers are automatically added: *Path*, *Status*, *Content-Length*, *WWWAuthenticate*, and *Location*.<br />The body from the authorization service is always included in the response to downstream. | None |
+| **onAllow** <br /> string array | Lists headers from the authorization service forwarded to downstream when the authorization check result is allowed (HTTP code `200`).<br />If not specified, the original request is forwarded to the backend unmodified.<br />Any existing headers are overridden. | Optional |
+| **onDeny** <br /> string array | Lists headers from the authorization service forwarded to downstream when the authorization check result is not allowed (HTTP code is other than `200`).<br />If not specified, all the authorization response headers, except *Authority (Host)*, are included in the response to the downstream.<br />When a header is included in this list, the following headers are automatically added: *Path*, *Status*, *Content-Length*, *WWWAuthenticate*, and *Location*.<br />The body from the authorization service is always included in the response to downstream. | Optional |
 
 ### ToUpstream
 
+Defines the headers to be forwarded to the upstream (to the backend service).
+
 Appears in:
 - [Headers](#headers)
 
 | Field | Description | Validation |
 | --- | --- | --- |
-| **onAllow** <br /> string array | Lists headers from the authorization service added or overridden in the original request and forwarded to the upstream when the authorization check result is allowed (HTTP code `200`).<br />If not specified, the original request is forwarded to the backend unmodified.<br />Any existing headers are overridden. | None |
+| **onAllow** <br /> string array | Lists headers from the authorization service added or overridden in the original request and forwarded to the upstream when the authorization check result is allowed (HTTP code `200`).<br />If not specified, the original request is forwarded to the backend unmodified.<br />Any existing headers are overridden. | Optional |
 

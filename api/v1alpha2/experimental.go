@@ -2,6 +2,7 @@ package v1alpha2
 
 // Defines experimental configuration options.
 type Experimental struct {
+	// Defines experimental Istio Pilot configuration options.
 	PilotFeatures `json:"pilot"`
 
 	// Enables dual-stack support.
@@ -9,7 +10,7 @@ type Experimental struct {
 	EnableDualStack *bool `json:"enableDualStack,omitempty"`
 }
 
-// Defines experimental configuration options.
+// Defines experimental Istio Pilot configuration options.
 type PilotFeatures struct {
 	// Enables experimental Gateway API alpha support in Istio Pilot.
 	EnableAlphaGatewayAPI                bool `json:"enableAlphaGatewayAPI"`
