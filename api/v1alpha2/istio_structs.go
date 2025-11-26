@@ -5,9 +5,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
+// Configures the Istio installation.
 // +kubebuilder:validation:Optional
-
-// Specifies the configuration for the Istio installation.
 type Config struct {
 	// Defines the number of trusted proxies deployed in front of the Istio gateway proxy.
 	// +kubebuilder:validation:Minimum=0
@@ -18,7 +17,7 @@ type Config struct {
 	Authorizers []*Authorizer `json:"authorizers,omitempty"`
 
 	// Defines the external traffic policy for the Istio Ingress Gateway Service. Valid configurations are `"Local"` or `"Cluster"`. The external traffic policy set to `"Local"` preserves the client IP in the request, but also introduces the risk of unbalanced traffic distribution.
-	// > [!WARNING]: Switching `externalTrafficPolicy` may result in a temporal increase in request delay. Make sure that this is acceptable.
+	// WARNING: Switching **externalTrafficPolicy** may result in a temporal increase in request delay. Make sure that this is acceptable.
 	// +kubebuilder:validation:Optional
 	// +kubebuilder:validation:Enum=Local;Cluster
 	GatewayExternalTrafficPolicy *string `json:"gatewayExternalTrafficPolicy,omitempty"`
@@ -28,26 +27,27 @@ type Config struct {
 	Telemetry Telemetry `json:"telemetry,omitempty"`
 }
 
+// Configures Istio components.
 type Components struct {
-	// Defines component configuration for Istiod.
+	// Configures the Istio Pilot component.
 	Pilot *IstioComponent `json:"pilot,omitempty"`
-	// Defines component configurations for Istio Ingress Gateway.
+	// Configures the Istio Ingress Gateway component.
 	IngressGateway *IstioComponent `json:"ingressGateway,omitempty"`
-	// Defines component configuration for Istio CNI DaemonSet.
+	// Configures the Istio CNI DaemonSet component.
 	Cni *CniComponent `json:"cni,omitempty"`
-	// Defines component configuration for the Istio sidecar proxy.
+	// Configures the Istio sidecar proxy component.
 	Proxy *ProxyComponent `json:"proxy,omitempty"`
-	// Defines component configuration for Istio Egress Gateway.
+	// Configures the Istio Egress Gateway component.
 	// +kubebuilder:validation:Optional
 	EgressGateway *EgressGateway `json:"egressGateway,omitempty"`
 }
 
-// **KubernetesResourcesConfig** is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
+// Defines Kubernetes-level configuration options for Istio components. It's a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 type KubernetesResourcesConfig struct {
-	// Defines configuration for [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
+	// Configures the [HorizontalPodAutoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 	// +kubebuilder:validation:Optional
 	HPASpec *HPASpec `json:"hpaSpec,omitempty"`
-	// Defines configuration for rolling updates. See [Rolling Update Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment).
+	// Defines the rolling updates strategy. See [Rolling Update Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment).
 	// +kubebuilder:validation:Optional
 	Strategy *Strategy `json:"strategy,omitempty"`
 	// Defines Kubernetes resources' configuration. See [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
@@ -55,25 +55,27 @@ type KubernetesResourcesConfig struct {
 	Resources *Resources `json:"resources,omitempty"`
 }
 
-// Defines Istio proxies' configuration.
+// Configures the Istio sidecar proxy component.
 type ProxyComponent struct {
-	// ProxyK8sConfig is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
+	// **ProxyK8sConfig** is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 	// +kubebuilder:validation:Required
 	K8S *ProxyK8sConfig `json:"k8s"`
 }
 
 // **ProxyK8sConfig** is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 type ProxyK8sConfig struct {
+	// Defines Kubernetes resources' configuration. See [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
 	Resources *Resources `json:"resources,omitempty"`
 }
 
-// Defines configuration for CNI Istio component.
+// Configures the Istio CNI DaemonSet component.
 type CniComponent struct {
-	// **CniK8sConfig** is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
+	// Configures the Istio CNI DaemonSet component. It is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 	// +kubebuilder:validation:Required
 	K8S *CniK8sConfig `json:"k8s"`
 }
 
+// Configures the Istio CNI DaemonSet component. It is a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 type CniK8sConfig struct {
 	// Defines the Pod scheduling affinity constraints. See [Affinity and anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
 	// +kubebuilder:validation:Optional
@@ -83,7 +85,6 @@ type CniK8sConfig struct {
 	Resources *Resources `json:"resources,omitempty"`
 }
 
-// Defines configuration for HorizontalPodAutoscaler.
 type HPASpec struct {
 	// Defines the minimum number of replicas for the HorizontalPodAutoscaler.
 	// +kubebuilder:validation:Minimum=0
@@ -96,15 +97,16 @@ type HPASpec struct {
 	MinReplicas *int32 `json:"minReplicas,omitempty"`
 }
 
-// IstioComponent defines the configuration for the generic Istio components, that is, Istio Ingress gateway and istiod.
+// Defines the configuration for the generic Istio components, that is, Istio Ingress gateway and istiod.
 type IstioComponent struct {
-	// 
+	// Defines the Kubernetes resources' configuration for Istio components. It's a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 	// +kubebuilder:validation:Required
 	K8s *KubernetesResourcesConfig `json:"k8s"`
 }
 
+// Defines the rolling updates strategy. See [Rolling Update Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment).
 type Strategy struct {
-	// Defines the rolling update strategy.
+	// Defines the configuration for rolling updates. See [Rolling Update Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment).
 	// +kubebuilder:validation:Required
 	RollingUpdate *RollingUpdate `json:"rollingUpdate"`
 }
@@ -141,9 +143,9 @@ type ResourceClaims struct {
 	Memory *string `json:"memory,omitempty"`
 }
 
-// Defines configuration for Istio Egress Gateway.
+// Configures the Istio Egress Gateway component.
 type EgressGateway struct {
-	// Defines the Kubernetes resources' configuration for Istio Egress Gateway.
+	// Defines the Kubernetes resources' configuration for Istio Egress Gateway. It's a subset of [KubernetesResourcesSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec).
 	// +kubebuilder:validation:Optional
 	K8s *KubernetesResourcesConfig `json:"k8s"`
 	// Enables or disables Istio Egress Gateway.

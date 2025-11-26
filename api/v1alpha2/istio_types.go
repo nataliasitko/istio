@@ -152,16 +152,16 @@ type ReasonWithMessage struct {
 
 // IstioSpec describes the desired specification for installing or updating Istio.
 type IstioSpec struct {
-	// Defines configuration of the Istio installation.
+	// Configures the Istio installation.
 	// +kubebuilder:validation:Optional
 	Config Config `json:"config,omitempty"`
-	// Defines Istio components's configuration.
+	// Configures Istio components.
 	// +kubebuilder:validation:Optional
 	Components *Components `json:"components,omitempty"`
 	// Defines experimental configuration options.
 	// +kubebuilder:validation:Optional
 	Experimental *Experimental `json:"experimental,omitempty"`
-	// Enables compatibility mode for Istio installation.
+	// Enables the compatibility mode for the Istio installation.
 	// +kubebuilder:validation:Optional
 	CompatibilityMode bool `json:"compatibilityMode,omitempty"`
 }
@@ -192,16 +192,15 @@ type IstioList struct {
 	Items           []Istio `json:"items"`
 }
 
-// IstioStatus defines the observed state of IstioCR.
+// Defines the observed state of the Istio custom resource.
 type IstioStatus struct {
-	// State signifies the current state of CustomObject. Value
-	// can be one of ("Ready", "Processing", "Error", "Deleting", "Warning").
+	// Signifies the current state of **CustomObject**. Possible values are `Ready`, `Processing`, `Error`, `Deleting`, or `Warning`.
 	// +kubebuilder:validation:Required
 	// +kubebuilder:validation:Enum=Processing;Deleting;Ready;Error;Warning
 	State State `json:"state"`
-	//  Conditions associated with IstioStatus.
+	// Contains conditions associated with IstioStatus.
 	Conditions *[]metav1.Condition `json:"conditions,omitempty"`
-	// Description of Istio status.
+	// Describes the Istio status.
 	Description string `json:"description,omitempty"`
 }
 

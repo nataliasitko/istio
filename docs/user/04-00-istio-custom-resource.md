@@ -49,7 +49,7 @@ Appears in:
 
 ### CniComponent
 
-Defines configuration for CNI Istio component.
+Configures the CNI Istio component.
 
 Appears in:
 - [Components](#components)
@@ -135,7 +135,7 @@ Appears in:
 
 ### EgressGateway
 
-Defines configuration for Istio Egress Gateway.
+Configures the Istio Egress Gateway.
 
 Appears in:
 - [Components](#components)

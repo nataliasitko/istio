@@ -8,7 +8,7 @@ import (
 // The defined authorizer can be referenced by name in an AuthorizationPolicy
 // with action CUSTOM to enforce requests to be authorized by the external authorization service.
 type Authorizer struct {
-	// A unique name identifying the authorization provider.
+	// Specifies a unique name identifying the authorization provider.
 	// +kubebuilder:validation:Required
 	Name string `json:"name"`
 
@@ -22,11 +22,11 @@ type Authorizer struct {
 	// +kubebuilder:validation:Required
 	Port uint32 `json:"port"`
 
-	// Specifies headers included, added, or forwarded during authorization.
+	// Specifies the headers included, added, or forwarded during authorization.
 	Headers *Headers `json:"headers,omitempty"`
 
 	// Specifies the prefix which included in the request sent to the authorization service.
-	// The prefix might be constructed with special characters (e.g., `/test?original_path=`).
+	// The prefix might be constructed with special characters (for example, `/test?original_path=`).
 	// +kubebuilder:validation:Optional
 	PathPrefix *string `json:"pathPrefix,omitempty"`
 
@@ -37,21 +37,21 @@ type Authorizer struct {
 
 // Specifies headers included, added, or forwarded during authorization.
 // Exact, prefix, and suffix matches are supported, similar to the syntax used in AuthorizationPolicy rules (excluding the presence match):
-// - Exact match: "abc" matches the value "abc".
-// - Prefix match: "abc*" matches the values "abc" and "abcd".
-// - Suffix match: "*abc" matches the values "abc" and "xabc".
-
+// - Exact match: `abc` matches the value `abc`.
+// - Prefix match: `abc*` matches the values `abc` and `abcd`.
+// - Suffix match: `*abc` matches the values `abc` and `xabc`.
 type Headers struct {
-	// Defines headers to be included or added in check authorization request.
+	// Defines the headers to be included or added in check authorization request.
 	InCheck *InCheck `json:"inCheck,omitempty"`
 
-	// Defines headers to be forwarded to the upstream (to the backend service).
+	// Defines the headers to be forwarded to the upstream (to the backend service).
 	ToUpstream *ToUpstream `json:"toUpstream,omitempty"`
 
-	// Defines headers to be forwarded to the downstream (the client).
+	// Defines the headers to be forwarded to the downstream (the client).
 	ToDownstream *ToDownstream `json:"toDownstream,omitempty"`
 }
 
+// Defines the headers to be included or added in check authorization request.
 type InCheck struct {
 	// Lists client request headers included in the authorization request sent to the authorization service.
 	// In addition to the headers specified here, the following headers are included by default:
@@ -65,6 +65,7 @@ type InCheck struct {
 	Add map[string]string `json:"add,omitempty"`
 }
 
+// Defines the headers to be forwarded to the upstream (to the backend service).	
 type ToUpstream struct {
 	// Lists headers from the authorization service added or overridden in the original request and forwarded to the upstream when the authorization check result is allowed (HTTP code `200`).
 	// If not specified, the original request is forwarded to the backend unmodified.
@@ -72,6 +73,7 @@ type ToUpstream struct {
 	OnAllow []string `json:"onAllow,omitempty"`
 }
 
+// Defines the headers to be forwarded to the downstream (the client).
 type ToDownstream struct {
 	// Lists headers from the authorization service forwarded to downstream when the authorization check result is allowed (HTTP code `200`).
 	// If not specified, the original request is forwarded to the backend unmodified.
