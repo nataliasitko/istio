@@ -1,3 +1,7 @@
+---
+test: yes
+---
+
 # Exposing Workloads Using Istio VirtualService
 Learn how to expose a workload with Istio [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/) and your custom domain.
 

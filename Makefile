@@ -405,3 +405,6 @@ generate-crd-docs: bin/crd-ref-docs ## Generate CRD reference docs
 	sed -i'' -e 's/\\}/\}/g' docs/user/04-00-istio-custom-resource.md
 	sed -i'' -e 's/\\{/\{/g' docs/user/04-00-istio-custom-resource.md
 	rm -f docs/user/04-00-istio-custom-resource.md-e
+
+snips:
+	@scripts/gen_snips.sh
