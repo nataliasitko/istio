@@ -10,6 +10,7 @@ export default [
     { text: 'Configure Observability for the Istio Service Mesh', link: './00-40-enable-istio-access-logs.md' },
     ] },
   { text: 'Istio Custom Resource', link: './04-00-istio-custom-resource' },
+  { text: 'Network Policies', link: '.networkpolicies.md' },
   { text: 'Tutorials', link: './tutorials/README', collapsed: true, items: [
     { text: 'Expose Workloads Using oauth2-proxy', link: './tutorials/01-10-external-authorization-provider' },
     { text: 'Expose Workloads Using Gateway API', link: './tutorials/01-20-expose-httbin-gateway-api' },
