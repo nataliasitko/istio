@@ -1,0 +1,18 @@
+<!-- whats-new-istio-1.30.0.xml -->
+<!-- INSERT INTO: What's New for Kyma Runtime > tbody outputclass="JSON_EXPORT__WN" -->
+<row>
+   <entry outputclass="Title">
+      <p>Istio module: Update to Version 1.30.0</p>
+   </entry>
+   <entry outputclass="Description">
+      <p>You can now configure <codeph>proxyStatsMatcher</codeph> in the Istio custom resource. It allows you to define which proxy statistics are emitted by Istio sidecars and gateways using inclusion regular expressions. See <xref format="html" href="https://github.com/kyma-project/istio/pull/2178" scope="external">PR #2178</xref>.</p>
+   </entry>
+   <entry outputclass="Action"><p>Info only</p></entry>
+   <entry outputclass="Software_Lifecycle"><p>General Availability</p></entry>
+   <entry outputclass="BTP_Type"><p>New</p></entry>
+   <entry><p outputclass="Latest_Revision" translate="no">2026-08-25</p></entry>
+   <entry><p outputclass="Valid_as_Of" translate="no">2026-09-08</p></entry>
+   <entry/>
+   <entry>All scenarios</entry>
+   <entry>1.27</entry>
+</row>
