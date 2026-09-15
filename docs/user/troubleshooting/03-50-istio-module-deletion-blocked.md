@@ -1,4 +1,4 @@
-# Istio Module Deletion Is Blocked
+# Istio Module Deletion Blocked
 
 Follow the steps in this guide if the Istio module deletion is blocked because Istio or Gateway API resources still exist in the cluster.
 
