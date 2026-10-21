@@ -23,6 +23,7 @@ concurrency:
 jobs:
   # Build job
   build:
+    if: github.repository_owner != 'kyma-project'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -66,6 +67,7 @@ jobs:
 
   # Deployment job
   deploy:
+    if: github.repository_owner != 'kyma-project'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
